@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>NLInfoBar</AssemblyName>
+    <RootNamespace>NLInfoBar</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- NetLimiter.dll and NLInterop.dll are AMD64-only (docs/DESIGN.md). -->
+    <PlatformTarget>x64</PlatformTarget>
+    <Version>0.1.3</Version>
+    <Product>NLInfoBar</Product>
+    <Description>Live NetLimiter upload/download speed on the Windows taskbar (unofficial, not affiliated with Locktime Software)</Description>
+    <Copyright>NLInfoBar contributors</Copyright>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <!--
+    NetLimiter API: compile-time only (docs/DESIGN.md).
+    PackageDownload fetches just this package (none of its dependencies) and the DLL is never copied to the
+    output; at run time the signed copy from the installed NetLimiter is loaded instead (Api/NlApiLoader.cs).
+  -->
+  <PropertyGroup>
+    <NetLimiterApiVersion>5.3.18</NetLimiterApiVersion>
+    <!-- runtimes/win-x64/lib/net462/NetLimiter.dll; pinned after `dotnet nuget verify` (Locktime author signature + nuget.org repository signature). -->
+    <NetLimiterApiSha256>3BAC037780F7632BE519B0595533F894148FDE26F500E6EE495B83A15E9C8851</NetLimiterApiSha256>
+    <NetLimiterApiDir>$([MSBuild]::EnsureTrailingSlash('$(NuGetPackageRoot)'))netlimiter\$(NetLimiterApiVersion)\runtimes\win-x64\lib\net462\</NetLimiterApiDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageDownload Include="NetLimiter" Version="[$(NetLimiterApiVersion)]" />
+    <Reference Include="NetLimiter">
+      <HintPath>$(NetLimiterApiDir)NetLimiter.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="VerifyNetLimiterApi" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(NetLimiterApiDir)NetLimiter.dll')"
+           Text="NetLimiter API package $(NetLimiterApiVersion) is not restored. Build with build.ps1." />
+    <GetFileHash Files="$(NetLimiterApiDir)NetLimiter.dll" Algorithm="SHA256">
+      <Output TaskParameter="Hash" PropertyName="_NetLimiterApiActualSha256" />
+    </GetFileHash>
+    <Error Condition="'$(NetLimiterApiSha256)' == ''"
+           Text="NetLimiter.dll SHA-256 is not pinned. Verify the package signature (dotnet nuget verify), then set NetLimiterApiSha256 to $(_NetLimiterApiActualSha256)." />
+    <Error Condition="'$(_NetLimiterApiActualSha256)' != '$(NetLimiterApiSha256)'"
+           Text="NetLimiter.dll SHA-256 mismatch: expected $(NetLimiterApiSha256), found $(_NetLimiterApiActualSha256). Refusing to build." />
+  </Target>
+
+  <!-- The build output must be the executable alone: no NetLimiter, Microsoft or other third-party DLL. -->
+  <Target Name="VerifyOutputIsSingleExe" AfterTargets="Build">
+    <ItemGroup>
+      <_UnexpectedOutput Include="$(OutDir)**\*"
+                         Exclude="$(OutDir)$(TargetFileName);$(OutDir)$(TargetFileName).config;$(OutDir)$(TargetName).pdb;$(OutDir)settings.json;$(OutDir)nlinfobar.log;$(OutDir)nlinfobar.log.1" />
+    </ItemGroup>
+    <Error Condition="'@(_UnexpectedOutput)' != ''"
+           Text="Build output must contain only $(TargetFileName); unexpected: @(_UnexpectedOutput->'%(Filename)%(Extension)')" />
+  </Target>
+
+</Project>

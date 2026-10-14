@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest an idea or an improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        NLInfoBar is kept small on purpose. Please check the roadmap in the README and the ground rules in
+        CONTRIBUTING.md (no network access, no hooks, no administrator rights, no extra dependencies) first.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered

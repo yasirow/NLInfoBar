@@ -1,0 +1,23 @@
+# Build output and release packages
+bin/
+obj/
+artifacts/
+
+# Repository-local SDK, SDK state and NuGet caches (see build.ps1)
+.dotnet/
+.dotnet-home/
+.packages/
+.nuget/
+
+# Local working notes; never published
+.private/
+
+# IDE
+.vs/
+.vscode/
+*.user
+
+# Runtime files the app writes next to itself
+settings.json
+*.log
+*.log.1

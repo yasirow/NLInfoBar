@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: write   # create the release and upload its files
+    env:
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check that the tag matches the project version
+        id: version
+        shell: pwsh
+        run: |
+          $version = $env:TAG.TrimStart('v')
+          [xml] $project = Get-Content -Raw src/NLInfoBar/NLInfoBar.csproj
+          $projectVersion = $project.SelectSingleNode('/Project/PropertyGroup/Version').InnerText.Trim()
+          if ($projectVersion -ne $version) { throw "Tag $env:TAG does not match <Version>$projectVersion</Version>." }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build, verify and package
+        shell: pwsh
+        run: ./tools/package.ps1 -RequireInstaller
+
+      - name: Write release notes from CHANGELOG.md
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: ./tools/release-notes.ps1 -Version $env:VERSION -OutFile release-notes/RELEASE_NOTES.md
+
+      - name: Publish the release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $files = Get-ChildItem artifacts -File | Where-Object { $_.Extension -in '.exe', '.zip', '.txt' } | ForEach-Object FullName
+          $flags = @('--verify-tag', '--title', "NLInfoBar $env:VERSION", '--notes-file', 'release-notes/RELEASE_NOTES.md')
+          if ($env:VERSION.StartsWith('0.')) { $flags += '--prerelease' }
+          gh release create $env:TAG @files @flags

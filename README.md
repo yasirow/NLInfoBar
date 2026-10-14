@@ -1,0 +1,180 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
+    <img src="docs/assets/logo-light.svg" alt="NLInfoBar" width="360">
+  </picture>
+</p>
+
+<h3 align="center">Live NetLimiter upload and download speed on your Windows taskbar</h3>
+
+<p align="center">
+  The taskbar InfoBar that Windows 11 can no longer show, rebuilt as a tiny standalone app.<br>
+  Offline, no administrator rights, no hooks — and out of the way of your games.
+</p>
+
+<p align="center">
+  <a href="https://github.com/yasirow/NLInfoBar/releases"><img src="https://img.shields.io/github/v/release/yasirow/NLInfoBar?include_prereleases&style=flat-square&label=release" alt="Latest release"></a>
+  <a href="https://github.com/yasirow/NLInfoBar/releases"><img src="https://img.shields.io/github/downloads/yasirow/NLInfoBar/total?style=flat-square&label=downloads" alt="Downloads"></a>
+  <a href="https://github.com/yasirow/NLInfoBar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasirow/NLInfoBar/ci.yml?branch=main&style=flat-square&label=build" alt="Build status"></a>
+  <img src="https://img.shields.io/badge/Windows-10%20%C2%B7%2011-0078D4?style=flat-square" alt="Windows 10 and 11">
+  <img src="https://img.shields.io/badge/.NET%20Framework-4.8-512BD4?style=flat-square" alt=".NET Framework 4.8">
+  <img src="https://img.shields.io/badge/requires-NetLimiter%205-3C8D2F?style=flat-square" alt="Requires NetLimiter 5">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/status-early%20alpha-D9A21B?style=flat-square" alt="Status: early alpha">
+</p>
+
+<p align="center">
+  <a href="https://github.com/yasirow/NLInfoBar/releases/latest"><img src="https://img.shields.io/badge/Download%20for%20Windows-2EA44F?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows"></a>
+</p>
+
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#update">Update</a> ·
+  <a href="CHANGELOG.md">Changelog</a> ·
+  <a href="docs/DESIGN.md">How it works</a> ·
+  <a href="docs/TESTING.md">Tests</a> ·
+  <a href="SECURITY.md">Security</a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/screenshot.png" alt="NLInfoBar on a Windows 11 taskbar, next to the notification area: a red up arrow with the upload speed above a green down arrow with the download speed">
+</p>
+
+> [!NOTE]
+> **Unofficial project.** NLInfoBar is independent and open source. It is not affiliated with, endorsed by or
+> supported by Locktime Software, the developer of NetLimiter. NetLimiter is their trademark. You need your own
+> licensed copy of NetLimiter 5.
+
+## Why
+
+NetLimiter's InfoBar is a taskbar toolbar (a "deskband"). Windows 11 removed taskbar toolbars, so the InfoBar can no
+longer appear. NLInfoBar shows the same two numbers with the same look, using NetLimiter's official public API — as
+an ordinary, separate window that never modifies the taskbar or any other program.
+
+## Features
+
+- **The InfoBar look** — two lines on the taskbar: red ⬆ upload, green ⬇ download, transparent background,
+  B/s → KB/s → MB/s with one decimal.
+- **Follows the taskbar** — sits just before the notification area on a top, bottom, left or right taskbar, and
+  moves when the taskbar, the tray icons, the resolution or the scaling change, or when Explorer restarts.
+- **Gets out of the way of games** — hides completely, and stops reading, while a full-screen or borderless
+  windowed application is in front.
+- **Light** — one ~55 KB executable, no runtime to install; about 0.02 % CPU while idle.
+- **Safe by design** — no administrator rights, no network, no hooks or injection, no writes outside its own
+  folder. NetLimiter's API is loaded from your own NetLimiter installation and its signature is verified first.
+- **Resilient** — if the NetLimiter service stops, it shows `—` and reconnects by itself; it never shows an error
+  dialog.
+
+## Requirements
+
+- Windows 10 (version 1809 or later) or Windows 11, 64-bit (x64)
+- A licensed installation of [NetLimiter 5](https://www.netlimiter.com/)
+
+Nothing else: the .NET Framework 4.8 it uses is part of Windows.
+
+## Install
+
+1. Download the newest **`NLInfoBar-Setup-x.y.z.exe`** from [Releases](https://github.com/yasirow/NLInfoBar/releases/latest).
+2. Run it. It installs for your user only and does **not** ask for administrator rights. Tick
+   *Start NLInfoBar when I sign in to Windows* if you want it to start automatically.
+3. The bar appears on your taskbar, just before the clock and tray icons.
+
+| Download | Use it when |
+|---|---|
+| `NLInfoBar-Setup-x.y.z.exe` | Recommended. Start menu entry, optional autostart, clean uninstall. |
+| `NLInfoBar-x.y.z-portable.zip` | You prefer no installation: unzip anywhere and run `NLInfoBar.exe`. |
+| `SHA256SUMS.txt` | To verify your download. |
+
+> [!TIP]
+> Releases are not code-signed yet, so Windows SmartScreen may warn on first run — choose **More info → Run
+> anyway**. To check that a file is exactly what the build produced, run
+> `Get-FileHash .\NLInfoBar-Setup-x.y.z.exe -Algorithm SHA256` in PowerShell and compare the hash with
+> `SHA256SUMS.txt`. Every release is built by [GitHub Actions](https://github.com/yasirow/NLInfoBar/actions) from
+> the tagged source code.
+
+## Update
+
+NLInfoBar never checks for updates by itself, because it never connects to the internet.
+
+- **Get notified:** on this page, click **Watch → Custom → Releases**.
+- **Update:** download the newer setup and run it. It closes the running bar, upgrades it in place and keeps your
+  settings. With the portable ZIP, replace `NLInfoBar.exe`.
+- **What changed:** each release lists its changes, and they are all collected in [CHANGELOG.md](CHANGELOG.md).
+- **Which version do I have?** Hover the bar; the first line of the tooltip shows it.
+
+## Uninstall
+
+Open **Windows Settings → Apps → Installed apps → NLInfoBar → Uninstall**. This removes the program, its shortcuts,
+its uninstall entry and its own settings and log files — and nothing else. NetLimiter is not touched.
+For the portable version, exit the bar and delete its folder.
+
+## Using it
+
+- **Hover** the bar for details: version, zone, connection status and NetLimiter version.
+- **Right-click** the bar for the menu (currently: Exit).
+- The bar shows NetLimiter's **Internet** zone by default.
+
+| The bar shows | Meaning |
+|---|---|
+| Speeds with coloured arrows | Connected and up to date |
+| `…` | Connecting to NetLimiter |
+| `—` | The NetLimiter service is not running; NLInfoBar reconnects automatically |
+| `denied` | NetLimiter refused access (the Windows user needs NetLimiter's *Monitor* right) |
+| `API?` | NetLimiter's files failed the signature check, or this NetLimiter version is not compatible |
+| `NL?` | NetLimiter is not installed |
+
+### Settings
+
+Optional: create `settings.json` next to `NLInfoBar.exe` and restart the bar. For example, to show two decimals,
+use units of 1000 and a different green:
+
+```json
+{ "decimals": 2, "unitBase": 1000, "colors": { "download": "#00C853" } }
+```
+
+All keys are listed in [docs/DESIGN.md](docs/DESIGN.md#81-settingsjson).
+
+## Games, anti-cheat and privacy
+
+NLInfoBar is built to be invisible to games and anti-cheat systems:
+
+- It installs no hooks, injects nothing, opens no handles to games and draws no overlay.
+- It learns about full-screen applications from the same Windows notification the taskbar uses, then hides
+  completely so it cannot interfere with full-screen optimisations.
+- It runs as your normal user and never asks for administrator rights.
+- It opens no network connections and collects no data. Its log stays on your PC and masks your user name, paths
+  and computer name.
+
+The full list of rules, and every Windows function the app is allowed to call, is in
+[docs/DESIGN.md](docs/DESIGN.md#7-security-model).
+
+## Build from source
+
+```powershell
+git clone https://github.com/yasirow/NLInfoBar.git
+cd NLInfoBar
+powershell -ExecutionPolicy Bypass -File .\build.ps1
+```
+
+You need the .NET SDK 10; NetLimiter is only needed to run the app. [CONTRIBUTING.md](CONTRIBUTING.md) shows how to
+install the SDK inside the repository folder, how to create the release packages, and the rules every change follows.
+
+## Roadmap
+
+| Version | Planned |
+|---|---|
+| 0.2.0 | Drag the bar to any place on the taskbar and remember it; support auto-hiding taskbars |
+| 0.3.0 | Multi-monitor full-screen detection; detect a game that is already full screen at start-up; optional game list and show/hide hotkey |
+| 0.4.0 | Menu: choose the zone, open NetLimiter, switch Limiter / Blocker / Priorities (within NetLimiter's own permissions), Blocker request alerts, open the Releases page |
+| 0.5.0 | Automatic light/dark text, taskbars on secondary monitors, code signing |
+| 1.0.0 | Stable release |
+
+## Contributing
+
+Bug reports, ideas and pull requests are welcome — please read [CONTRIBUTING.md](CONTRIBUTING.md) first. Security
+issues go through [private reporting](SECURITY.md), not public issues.
+
+## License
+
+[MIT](LICENSE) © NLInfoBar contributors. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for NetLimiter and the
+build tools.

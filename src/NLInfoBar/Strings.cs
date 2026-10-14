@@ -1,0 +1,44 @@
+using System.Globalization;
+using NLInfoBar.Api;
+
+namespace NLInfoBar
+{
+    /// <summary>UI text: Turkish when the Windows display language is Turkish, English otherwise.</summary>
+    internal static class Strings
+    {
+        private static readonly bool Tr = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "tr";
+
+        public static string Exit => Tr ? "Çıkış" : "Exit";
+        public static string Zone => "Zone";
+        public static string Elevated => Tr ? "Yönetici olarak çalışıyor (gerekli değil)" : "Running as administrator (not needed)";
+
+        /// <summary>Full sentence for the tooltip.</summary>
+        public static string Describe(LinkStatus status)
+        {
+            switch (status)
+            {
+                case LinkStatus.Connecting: return Tr ? "Bağlanıyor…" : "Connecting…";
+                case LinkStatus.Connected: return Tr ? "Bağlı" : "Connected";
+                case LinkStatus.AccessDenied: return Tr ? "NetLimiter erişim izni vermedi (Monitor hakkı gerekli)" : "NetLimiter denied access (Monitor right required)";
+                case LinkStatus.NotInstalled: return Tr ? "NetLimiter bulunamadı" : "NetLimiter not found";
+                case LinkStatus.ApiUntrusted: return Tr ? "NetLimiter API dosyalarının imzası doğrulanamadı" : "NetLimiter API files failed signature verification";
+                case LinkStatus.ApiIncompatible: return Tr ? "Kurulu NetLimiter sürümü uyumsuz" : "Installed NetLimiter version is not compatible";
+                default: return Tr ? "NetLimiter servisine bağlanılamıyor" : "Cannot reach the NetLimiter service";
+            }
+        }
+
+        /// <summary>Short text drawn in the bar instead of the speeds.</summary>
+        public static string Short(LinkStatus status)
+        {
+            switch (status)
+            {
+                case LinkStatus.Connecting: return "…";
+                case LinkStatus.AccessDenied: return Tr ? "izin yok" : "denied";
+                case LinkStatus.NotInstalled: return "NL?";
+                case LinkStatus.ApiUntrusted:
+                case LinkStatus.ApiIncompatible: return "API?";
+                default: return "—";
+            }
+        }
+    }
+}

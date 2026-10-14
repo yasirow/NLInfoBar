@@ -1,0 +1,85 @@
+# Changelog
+
+All notable changes to NLInfoBar are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html). While the version is below 1.0.0, each roadmap
+milestone is a minor release (`0.x.0`) and fixes in between are patch releases (`0.x.y`).
+
+## [Unreleased]
+
+## [0.1.3] - 2026-10-14
+
+First public release.
+
+### Added
+- Per-user installer (no administrator rights), portable ZIP and `SHA256SUMS.txt` for every release.
+- GitHub Actions: a build on every push and pull request, and a release pipeline that builds, packages and
+  publishes the files for a version tag.
+- Documentation: README, design notes, test plan, contributing guide, security policy, third-party notices.
+
+### Changed
+- No change to the application's behavior since 0.1.2.
+
+## [0.1.2] - 2026-10-14
+
+### Fixed
+- The bar could briefly disappear when the Start button was clicked or a taskbar button was right-clicked,
+  because the taskbar raises itself above other always-on-top windows. The bar now also listens to the shell's
+  menu and mouse-capture notifications (out of context, no hooks into other processes) and, for about 600 ms after
+  each one, checks every 50 ms whether the taskbar is above it.
+
+### Changed
+- When it has to come back to the front, the bar is placed directly above the taskbar instead of at the very top,
+  so the Start menu, jump lists and tooltips stay above it.
+- The bar only re-orders itself when it is actually covered; the check reads the window order and changes nothing.
+
+## [0.1.1] - 2026-10-14
+
+### Fixed
+- After a click on the taskbar, or after a full-screen application closed, the taskbar could stay on top of the
+  bar and hide it completely, so the app looked closed while it was running. The bar now moves back to the front
+  whenever the foreground window changes, unless the new foreground window is full screen.
+
+## [0.1.0] - 2026-10-14
+
+Initial preview.
+
+### Added
+- Connection to the local NetLimiter 5 service through its official API, over the service's local named pipe only:
+  no administrator rights, no remote connection, no TCP.
+- Live upload and download speed of the selected zone (Internet by default), updated once per second.
+- The look of the original NetLimiter InfoBar: two lines, red ⬆ upload on top, green ⬇ download below, transparent
+  background, units B/s → KB/s → MB/s → GB/s with one decimal.
+- Placement on the taskbar surface, just before the notification area, for taskbars on any screen edge.
+- Event-driven repositioning when the taskbar moves or resizes, when Explorer restarts, when DPI, resolution or
+  work area change, and when the notification area grows.
+- Hides itself and stops reading while a full-screen application (including borderless windowed games) is in
+  front; comes back when it closes.
+- Stops reading while the session is locked.
+- No crash when the NetLimiter service is unavailable: shows `—` and reconnects with an exponential back-off
+  (2 s → 30 s). Short status texts for missing permission, untrusted or incompatible API, and missing NetLimiter.
+- Tooltip with version, zone, link status and NetLimiter version.
+- Single instance; right-click menu with Exit.
+- English or Turkish UI, following the Windows display language.
+
+### Security
+- The NetLimiter API is loaded read-only from the installed NetLimiter. Only eight known assemblies are accepted,
+  and each one must carry a valid Authenticode signature from the expected publisher (checked without network
+  access). If an API assembly is ever loaded from anywhere else, the app exits.
+- No hooks, injection or drivers. The bar is a tool window that never takes focus. Windows error dialogs are
+  suppressed so nothing pops up over a game.
+- The log masks the user name, profile paths and computer name.
+- Build: the compile-time NetLimiter package is pinned by SHA-256, the output contains only the executable, and
+  the build writes nothing to the user profile.
+
+### Known limitations
+- The position cannot be dragged or saved yet.
+- An auto-hiding taskbar is not supported yet.
+- If the app is started while a full-screen game is already running, it does not hide until that game closes.
+
+[Unreleased]: https://github.com/yasirow/NLInfoBar/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/yasirow/NLInfoBar/releases/tag/v0.1.3
+[0.1.2]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#012---2026-10-14
+[0.1.1]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#011---2026-10-14
+[0.1.0]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#010---2026-10-14

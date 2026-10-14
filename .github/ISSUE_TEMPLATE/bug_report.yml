@@ -1,0 +1,68 @@
+name: Bug report
+description: Something does not work as described.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Privacy:** please do not post personal information. The log already masks your user name, profile paths
+        and computer name, but read it before pasting.
+        **Security problems:** do not open a public issue; use **Security → Report a vulnerability** instead.
+  - type: input
+    id: version
+    attributes:
+      label: NLInfoBar version
+      description: Hover the bar; the first line of the tooltip shows it.
+      placeholder: "0.1.3"
+    validations:
+      required: true
+  - type: input
+    id: netlimiter
+    attributes:
+      label: NetLimiter version
+      description: Shown in the tooltip, or in NetLimiter under Help → About.
+      placeholder: "5.3.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: windows
+    attributes:
+      label: Windows
+      options:
+        - Windows 11
+        - Windows 10
+    validations:
+      required: true
+  - type: dropdown
+    id: taskbar
+    attributes:
+      label: Taskbar position
+      options:
+        - Bottom
+        - Top
+        - Left
+        - Right
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: The relevant lines from `nlinfobar.log` (next to `NLInfoBar.exe`, or in `%LocalAppData%\NLInfoBar`).
+      render: text
