@@ -37,7 +37,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/screenshot.png" alt="NLInfoBar on a Windows 11 taskbar, next to the notification area: a red up arrow with the upload speed above a green down arrow with the download speed">
+  <img src="docs/assets/preview.svg" alt="NLInfoBar on a dark taskbar, next to the notification area: a red up arrow with the upload speed above a green down arrow with the download speed">
 </p>
 
 > [!NOTE]
