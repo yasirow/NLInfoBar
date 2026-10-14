@@ -276,8 +276,9 @@ attached to a public issue.
   `runtimes/win-x64/lib/net462/NetLimiter.dll` with `Private=false`, and the build fails unless the file's SHA-256
   matches the value pinned in the project (pinned after verifying the package's author and repository signatures
   with `dotnet nuget verify`).
-- **Other packages:** only Microsoft's .NET Framework reference assemblies (build-time only), locked by
-  `packages.lock.json` and restored in locked mode.
+- **Other packages:** only Microsoft's .NET Framework reference assemblies (build-time only). They are referenced
+  explicitly, so a clean PC and a CI runner with the targeting pack installed compile against the same files; they
+  are locked by `packages.lock.json` and restored in locked mode.
 - **Output check:** the build fails if its output contains anything other than `NLInfoBar.exe` and
   `NLInfoBar.exe.config`.
 - **Reproducibility and privacy:** `Deterministic`, `PathMap` and no PDB in Release, so no build-machine path or user

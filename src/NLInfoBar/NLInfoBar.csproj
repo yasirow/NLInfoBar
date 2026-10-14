@@ -26,6 +26,18 @@
   </ItemGroup>
 
   <!--
+    .NET Framework reference assemblies, build-time only. Referenced explicitly so every machine compiles against the
+    same files and packages.lock.json matches: otherwise the SDK adds this package only where the .NET Framework 4.8
+    targeting pack is not installed (true on a clean PC, false on GitHub's runners).
+  -->
+  <PropertyGroup>
+    <AutomaticallyUseReferenceAssemblyPackages>false</AutomaticallyUseReferenceAssemblyPackages>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!--
     NetLimiter API: compile-time only (docs/DESIGN.md).
     PackageDownload fetches just this package (none of its dependencies) and the DLL is never copied to the
     output; at run time the signed copy from the installed NetLimiter is loaded instead (Api/NlApiLoader.cs).
