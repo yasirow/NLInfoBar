@@ -1,6 +1,6 @@
-# Contributing to NLInfoBar
+# Contributing to BandBar
 
-Thanks for helping! NLInfoBar is small on purpose, and it runs next to games, anti-cheat systems and a network
+Thanks for helping! BandBar is small on purpose, and it runs next to games, anti-cheat systems and a network
 filter driver. Every change is judged first by whether it keeps the app lightweight, safe and invisible to other
 programs. Please read [docs/DESIGN.md](docs/DESIGN.md) before writing code.
 
@@ -42,7 +42,7 @@ powershell -ExecutionPolicy Bypass -File .dotnet\dotnet-install.ps1 -Channel 10.
 A system-wide .NET SDK 10 works too.
 
 ```powershell
-# Build (Release by default; output: src\NLInfoBar\bin\Release\net48\NLInfoBar.exe)
+# Build (Release by default; output: src\BandBar\bin\Release\net48\BandBar.exe)
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 
 # Build and create release packages in artifacts\ (the installer needs Inno Setup 6)
@@ -60,7 +60,7 @@ powershell -ExecutionPolicy Bypass -File .\tools\package.ps1
 
 ## Versioning and releases
 
-- The version lives in `<Version>` in `src/NLInfoBar/NLInfoBar.csproj` and is shown in the tooltip and the log.
+- The version lives in `<Version>` in `src/BandBar/BandBar.csproj` and is shown in the tooltip and the log.
 - [Semantic Versioning](https://semver.org): below 1.0.0, each roadmap milestone is a minor release and fixes are
   patch releases.
 - Every release has a [CHANGELOG.md](CHANGELOG.md) entry (Keep a Changelog sections: Added, Changed, Fixed,
@@ -71,7 +71,7 @@ powershell -ExecutionPolicy Bypass -File .\tools\package.ps1
 
 ## Reporting bugs and security issues
 
-- Bugs and ideas: [GitHub Issues](https://github.com/yasirow/NLInfoBar/issues) (the forms ask for exactly what is
+- Bugs and ideas: [GitHub Issues](https://github.com/yasirow/BandBar/issues) (the forms ask for exactly what is
   needed).
 - Security issues: please do **not** open a public issue; see [SECURITY.md](SECURITY.md).
 

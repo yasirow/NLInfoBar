@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NLInfoBar.Api
+namespace BandBar.Api
 {
     /// <summary>
     /// Keeps the connection to the local NetLimiter service on a background thread and publishes one

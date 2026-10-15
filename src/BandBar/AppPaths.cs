@@ -2,15 +2,15 @@ using System;
 using System.IO;
 using System.Security;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// Where the app may write: next to the executable when that folder is writable, otherwise
-    /// %LocalAppData%\NLInfoBar. Nowhere else (docs/DESIGN.md).
+    /// %LocalAppData%\BandBar. Nowhere else (docs/DESIGN.md).
     /// </summary>
     internal static class AppPaths
     {
-        public const string LogFileName = "nlinfobar.log";
+        public const string LogFileName = "bandbar.log";
         public const string SettingsFileName = "settings.json";
 
         /// <summary>Null when neither location is writable; the app then runs without a log and with default settings.</summary>
@@ -28,7 +28,7 @@ namespace NLInfoBar
             try
             {
                 string fallback = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NLInfoBar");
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BandBar");
                 Directory.CreateDirectory(fallback);
                 DataDir = CanWrite(fallback) ? fallback : null;
             }

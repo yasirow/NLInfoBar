@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Builds NLInfoBar and creates the release packages in artifacts\ (docs/DESIGN.md §10).
+    Builds BandBar and creates the release packages in artifacts\ (docs/DESIGN.md §10).
 
 .DESCRIPTION
-    - NLInfoBar-<version>-portable.zip  the executable and its notices
-    - NLInfoBar-Setup-<version>.exe     per-user installer (needs Inno Setup 6)
+    - BandBar-<version>-portable.zip  the executable and its notices
+    - BandBar-Setup-<version>.exe     per-user installer (needs Inno Setup 6)
     - SHA256SUMS.txt                    checksums of both
 
 .PARAMETER RequireInstaller
@@ -26,15 +26,15 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $root = Split-Path $PSScriptRoot -Parent
-$project = Join-Path $root 'src\NLInfoBar\NLInfoBar.csproj'
-$binDir = Join-Path $root 'src\NLInfoBar\bin\Release\net48'
+$project = Join-Path $root 'src\BandBar\BandBar.csproj'
+$binDir = Join-Path $root 'src\BandBar\bin\Release\net48'
 $artifacts = Join-Path $root 'artifacts'
 
 [xml] $projectXml = Get-Content -LiteralPath $project -Raw
 $versionNode = $projectXml.SelectSingleNode('/Project/PropertyGroup/Version')
 if (-not $versionNode) { throw 'No <Version> in the project file.' }
 $version = $versionNode.InnerText.Trim()
-Write-Host "NLInfoBar $version"
+Write-Host "BandBar $version"
 
 if (-not $SkipBuild) {
     # A separate process, so the build's environment redirection does not leak into packaging.
@@ -42,7 +42,7 @@ if (-not $SkipBuild) {
     if ($LASTEXITCODE -ne 0) { throw "Build failed ($LASTEXITCODE)." }
 }
 
-foreach ($file in 'NLInfoBar.exe', 'NLInfoBar.exe.config') {
+foreach ($file in 'BandBar.exe', 'BandBar.exe.config') {
     if (-not (Test-Path -LiteralPath (Join-Path $binDir $file))) { throw "Missing build output: $file" }
 }
 
@@ -50,13 +50,13 @@ if (Test-Path -LiteralPath $artifacts) { Remove-Item -LiteralPath $artifacts -Re
 New-Item -ItemType Directory -Path $artifacts | Out-Null
 
 # Portable ZIP: explicit files only, never settings or logs from a test run in bin\.
-$staging = Join-Path $artifacts "NLInfoBar-$version"
+$staging = Join-Path $artifacts "BandBar-$version"
 New-Item -ItemType Directory -Path $staging | Out-Null
-Copy-Item -LiteralPath (Join-Path $binDir 'NLInfoBar.exe') -Destination $staging
-Copy-Item -LiteralPath (Join-Path $binDir 'NLInfoBar.exe.config') -Destination $staging
+Copy-Item -LiteralPath (Join-Path $binDir 'BandBar.exe') -Destination $staging
+Copy-Item -LiteralPath (Join-Path $binDir 'BandBar.exe.config') -Destination $staging
 Copy-Item -LiteralPath (Join-Path $root 'LICENSE') -Destination (Join-Path $staging 'LICENSE.txt')
 Copy-Item -LiteralPath (Join-Path $root 'THIRD-PARTY-NOTICES.md') -Destination (Join-Path $staging 'THIRD-PARTY-NOTICES.txt')
-$zip = Join-Path $artifacts "NLInfoBar-$version-portable.zip"
+$zip = Join-Path $artifacts "BandBar-$version-portable.zip"
 Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zip
 Remove-Item -LiteralPath $staging -Recurse -Force
 Write-Host "Created $(Split-Path $zip -Leaf)"
@@ -70,9 +70,9 @@ $iscc = @(
 ) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
 
 if ($iscc) {
-    & $iscc /Q "/DAppVersion=$version" "/DSourceDir=$binDir" "/DOutputDir=$artifacts" (Join-Path $root 'installer\NLInfoBar.iss')
+    & $iscc /Q "/DAppVersion=$version" "/DSourceDir=$binDir" "/DOutputDir=$artifacts" (Join-Path $root 'installer\BandBar.iss')
     if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed ($LASTEXITCODE)." }
-    Write-Host "Created NLInfoBar-Setup-$version.exe"
+    Write-Host "Created BandBar-Setup-$version.exe"
 }
 elseif ($RequireInstaller) {
     throw 'Inno Setup 6 (ISCC.exe) not found.'

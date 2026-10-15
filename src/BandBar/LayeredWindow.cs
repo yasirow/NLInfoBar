@@ -1,12 +1,12 @@
 using System;
 using System.Drawing;
-using static NLInfoBar.NativeMethods;
+using static BandBar.NativeMethods;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// Pushes a 32-bit ARGB bitmap to our own layered window with per-pixel alpha (docs/DESIGN.md), so the taskbar
-    /// shows through the bar the way it did behind the original InfoBar.
+    /// shows through the bar.
     /// </summary>
     internal static class LayeredWindow
     {

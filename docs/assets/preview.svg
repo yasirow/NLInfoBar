@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="920" height="80" viewBox="0 0 460 40" role="img" aria-label="Illustration: NLInfoBar on a dark taskbar next to the notification area, showing 19.4 KB/s upload and 455.4 KB/s download">
-  <title>NLInfoBar on the taskbar (illustration)</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="80" viewBox="0 0 460 40" role="img" aria-label="Illustration: BandBar on a dark taskbar next to the notification area, showing 19.4 KB/s upload and 455.4 KB/s download">
+  <title>BandBar on the taskbar (illustration)</title>
   <rect width="460" height="40" fill="#1C1C1C"/>
   <rect y="0" width="460" height="1" fill="#2E2E2E"/>
 
-  <!-- NLInfoBar: upload on top, download below -->
+  <!-- BandBar: upload on top, download below -->
   <g font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif" font-size="12" fill="#FFFFFF">
     <path d="M14 5 L18 9.5 L15.6 9.5 L15.6 15 L12.4 15 L12.4 9.5 L10 9.5 Z" fill="#E74C3C"/>
     <text x="23" y="15">19.4 KB/s</text>

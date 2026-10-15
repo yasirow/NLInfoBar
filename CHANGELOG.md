@@ -1,12 +1,23 @@
 # Changelog
 
-All notable changes to NLInfoBar are documented in this file.
+All notable changes to BandBar are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). While the version is below 1.0.0, each roadmap
 milestone is a minor release (`0.x.0`) and fixes in between are patch releases (`0.x.y`).
 
 ## [Unreleased]
+
+## [0.1.4] - 2026-10-15
+
+### Changed
+- **The project is now called BandBar.** It was renamed at the request of the NetLimiter team, so that it cannot be
+  confused with NetLimiter's own taskbar bar. The executable, installer, release files, log file
+  (`bandbar.log`) and fallback data folder (`%LocalAppData%\BandBar`) carry the new name.
+- The installer is a new product entry. If you installed 0.1.3, which was published under the earlier name, exit it
+  and uninstall it from Windows Settings → Apps first (see README → Update).
+- Releases are no longer marked as pre-releases, so the README's download button and `/releases/latest` lead
+  straight to the newest version. The "early alpha" status badge still describes the project's maturity.
 
 ## [0.1.3] - 2026-10-14
 
@@ -49,8 +60,8 @@ Initial preview.
 - Connection to the local NetLimiter 5 service through its official API, over the service's local named pipe only:
   no administrator rights, no remote connection, no TCP.
 - Live upload and download speed of the selected zone (Internet by default), updated once per second.
-- The look of the original NetLimiter InfoBar: two lines, red ⬆ upload on top, green ⬇ download below, transparent
-  background, units B/s → KB/s → MB/s → GB/s with one decimal.
+- Compact two-line display: red ⬆ upload on top, green ⬇ download below, transparent background, units
+  B/s → KB/s → MB/s → GB/s with one decimal.
 - Placement on the taskbar surface, just before the notification area, for taskbars on any screen edge.
 - Event-driven repositioning when the taskbar moves or resizes, when Explorer restarts, when DPI, resolution or
   work area change, and when the notification area grows.
@@ -78,8 +89,9 @@ Initial preview.
 - An auto-hiding taskbar is not supported yet.
 - If the app is started while a full-screen game is already running, it does not hide until that game closes.
 
-[Unreleased]: https://github.com/yasirow/NLInfoBar/compare/v0.1.3...HEAD
-[0.1.3]: https://github.com/yasirow/NLInfoBar/releases/tag/v0.1.3
-[0.1.2]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#012---2026-10-14
-[0.1.1]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#011---2026-10-14
-[0.1.0]: https://github.com/yasirow/NLInfoBar/blob/main/CHANGELOG.md#010---2026-10-14
+[Unreleased]: https://github.com/yasirow/BandBar/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/yasirow/BandBar/releases/tag/v0.1.4
+[0.1.3]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#013---2026-10-14
+[0.1.2]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#012---2026-10-14
+[0.1.1]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#011---2026-10-14
+[0.1.0]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#010---2026-10-14

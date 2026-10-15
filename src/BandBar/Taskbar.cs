@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using static NLInfoBar.NativeMethods;
+using static BandBar.NativeMethods;
 
-namespace NLInfoBar
+namespace BandBar
 {
     internal enum TaskbarEdge
     {

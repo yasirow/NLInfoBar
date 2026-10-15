@@ -3,14 +3,14 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NLInfoBar.Api;
+using BandBar.Api;
 
-namespace NLInfoBar
+namespace BandBar
 {
     internal static class Program
     {
         /// <summary>Single-instance mutex; the installer's AppMutex must use the same name.</summary>
-        internal const string MutexName = @"Local\NLInfoBar.SingleInstance";
+        internal const string MutexName = @"Local\BandBar.SingleInstance";
 
         internal static bool IsElevated { get; private set; }
 
@@ -42,7 +42,7 @@ namespace NLInfoBar
                 IsElevated = CheckElevated();
                 Settings settings = Settings.Load(AppPaths.DataDir);
                 Log.SetLevel(settings.LogLevel);
-                Log.Info("Starting NLInfoBar " + Version + (IsElevated ? " (running elevated, which is not needed)" : ""));
+                Log.Info("Starting BandBar " + Version + (IsElevated ? " (running elevated, which is not needed)" : ""));
 
                 // Must run before anything touches a NetLimiter type.
                 NlApiLoader.Install();

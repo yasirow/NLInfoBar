@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// Metrics and drawing for one DPI and taskbar thickness (docs/DESIGN.md): upload on the top line with a red up

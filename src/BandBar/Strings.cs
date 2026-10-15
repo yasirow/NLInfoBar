@@ -1,7 +1,7 @@
 using System.Globalization;
-using NLInfoBar.Api;
+using BandBar.Api;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>UI text: Turkish when the Windows display language is Turkish, English otherwise.</summary>
     internal static class Strings

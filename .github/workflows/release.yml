@@ -27,7 +27,7 @@ jobs:
         shell: pwsh
         run: |
           $version = $env:TAG.TrimStart('v')
-          [xml] $project = Get-Content -Raw src/NLInfoBar/NLInfoBar.csproj
+          [xml] $project = Get-Content -Raw src/BandBar/BandBar.csproj
           $projectVersion = $project.SelectSingleNode('/Project/PropertyGroup/Version').InnerText.Trim()
           if ($projectVersion -ne $version) { throw "Tag $env:TAG does not match <Version>$projectVersion</Version>." }
           "version=$version" >> $env:GITHUB_OUTPUT
@@ -49,6 +49,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           $files = Get-ChildItem artifacts -File | Where-Object { $_.Extension -in '.exe', '.zip', '.txt' } | ForEach-Object FullName
-          $flags = @('--verify-tag', '--title', "NLInfoBar $env:VERSION", '--notes-file', 'release-notes/RELEASE_NOTES.md')
-          if ($env:VERSION.StartsWith('0.')) { $flags += '--prerelease' }
+          # Published as a regular release so /releases/latest and the README download button point to it;
+          # the README's "early alpha" badge already states the maturity.
+          $flags = @('--verify-tag', '--latest', '--title', "BandBar $env:VERSION", '--notes-file', 'release-notes/RELEASE_NOTES.md')
           gh release create $env:TAG @files @flags

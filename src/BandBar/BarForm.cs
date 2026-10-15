@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using NLInfoBar.Api;
-using static NLInfoBar.NativeMethods;
+using BandBar.Api;
+using static BandBar.NativeMethods;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// The bar: a borderless, never-activated, topmost, per-pixel-alpha tool window on the taskbar surface
@@ -58,7 +58,7 @@ namespace NLInfoBar
         {
             this.settings = settings;
 
-            Text = "NLInfoBar";
+            Text = "BandBar";
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
@@ -534,7 +534,7 @@ namespace NLInfoBar
 
         private void UpdateToolTip()
         {
-            var sb = new StringBuilder("NLInfoBar ").Append(Program.Version);
+            var sb = new StringBuilder("BandBar ").Append(Program.Version);
             if (reading.ZoneName != null)
                 sb.Append('\n').Append(Strings.Zone).Append(": ").Append(reading.ZoneName);
             sb.Append('\n').Append(Strings.Describe(reading.Status));

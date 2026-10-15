@@ -1,6 +1,6 @@
-# NLInfoBar design
+# BandBar design
 
-This document describes how NLInfoBar works and, more importantly, the rules it follows. Contributions are
+This document describes how BandBar works and, more importantly, the rules it follows. Contributions are
 reviewed against it; changing a rule means changing this document first, in the same pull request.
 
 - [1. Goals and priorities](#1-goals-and-priorities)
@@ -17,8 +17,8 @@ reviewed against it; changing a rule means changing this document first, in the 
 
 ## 1. Goals and priorities
 
-Windows 11 no longer supports taskbar toolbars (deskbands), so NetLimiter's own InfoBar cannot be shown there.
-NLInfoBar is a separate, small window that sits on the taskbar and shows the same two numbers.
+Windows 11 no longer supports taskbar toolbars (deskbands), so NetLimiter's own taskbar bar cannot be shown there.
+BandBar is an independent, separate small window that sits on the taskbar and shows the upload and download speed.
 
 When requirements conflict, the higher one wins:
 
@@ -26,7 +26,7 @@ When requirements conflict, the higher one wins:
 2. **Never disturb full-screen games or applications.**
 3. **Follow the taskbar** on any screen edge.
 4. **Never trigger anti-cheat systems.**
-5. **Never touch other programs** — their files, folders, registry keys, processes or windows. NLInfoBar only reads
+5. **Never touch other programs** — their files, folders, registry keys, processes or windows. BandBar only reads
    data from NetLimiter.
 6. **Show two values:** upload (red ⬆) and download (green ⬇).
 7. **Security first.**
@@ -91,7 +91,7 @@ service. No NetLimiter file is ever copied into this repository, the build outpu
 
 - `new NLClient().Connect()` with no arguments connects to the **local** service over its named pipe. The host,
   port and credential parameters are never used; remote connections and the TCP binding are never enabled.
-- Only NetLimiter's **Monitor** right is needed, which a standard user normally has. NLInfoBar never calls
+- Only NetLimiter's **Monitor** right is needed, which a standard user normally has. BandBar never calls
   NetLimiter's elevation functions and never changes NetLimiter's settings or access table.
 - The connection state comes from the `StateChanged` event. A lost connection is retried with an exponential
   back-off of 2, 4, 8, 16 and then every 30 seconds.
@@ -150,7 +150,7 @@ because messages can contain paths.
 - **Geometry:** `SHAppBarMessage(ABM_GETTASKBARPOS)` gives the edge and rectangle; if it fails, the rectangle of the
   `Shell_TrayWnd` window and its monitor are used. Both are read-only.
 - **Default position:** just before the notification area — `FindWindowEx(Shell_TrayWnd, "TrayNotifyWnd")` — on
-  the taskbar surface, like the original InfoBar. If the notification area cannot be found, 220 DIP from the end of
+  the taskbar surface, where a taskbar toolbar would sit. If the notification area cannot be found, 220 DIP from the end of
   the taskbar.
 - **AppBar registration:** the bar registers with `ABM_NEW` **without** `ABM_SETPOS`: no screen space is reserved
   and the taskbar is not changed. This only subscribes the bar to shell notifications:
@@ -230,8 +230,8 @@ game list is enabled.
 
 ## 8. Files and settings
 
-NLInfoBar writes only next to its executable when that folder is writable (the installer's default), otherwise to
-`%LocalAppData%\NLInfoBar`. It never writes the registry and never registers itself to start with Windows; only the
+BandBar writes only next to its executable when that folder is writable (the installer's default), otherwise to
+`%LocalAppData%\BandBar`. It never writes the registry and never registers itself to start with Windows; only the
 installer's optional, unchecked "start with Windows" task creates a shortcut in the user's Startup folder.
 
 ### 8.1 `settings.json`
@@ -259,9 +259,9 @@ Example:
 { "decimals": 2, "unitBase": 1000, "colors": { "download": "#00C853" } }
 ```
 
-### 8.2 `nlinfobar.log`
+### 8.2 `bandbar.log`
 
-At most 256 KB plus one backup (`nlinfobar.log.1`). Before a line is written, the user profile, AppData and temp
+At most 256 KB plus one backup (`bandbar.log.1`). Before a line is written, the user profile, AppData and temp
 paths, the user name (as a path segment) and the computer name are replaced with placeholders, so a log can be
 attached to a public issue.
 
@@ -279,8 +279,8 @@ attached to a public issue.
 - **Other packages:** only Microsoft's .NET Framework reference assemblies (build-time only). They are referenced
   explicitly, so a clean PC and a CI runner with the targeting pack installed compile against the same files; they
   are locked by `packages.lock.json` and restored in locked mode.
-- **Output check:** the build fails if its output contains anything other than `NLInfoBar.exe` and
-  `NLInfoBar.exe.config`.
+- **Output check:** the build fails if its output contains anything other than `BandBar.exe` and
+  `BandBar.exe.config`.
 - **Reproducibility and privacy:** `Deterministic`, `PathMap` and no PDB in Release, so no build-machine path or user
   name is embedded in the executable. Warnings are errors.
 - **CI:** GitHub-hosted `windows-2025` runners, actions pinned by commit SHA, read-only token except for the
@@ -292,18 +292,18 @@ Each release has three files, built by the release workflow from the tagged comm
 
 | File | Contents |
 |---|---|
-| `NLInfoBar-Setup-x.y.z.exe` | Per-user Inno Setup installer |
-| `NLInfoBar-x.y.z-portable.zip` | The executable and its notices, to run from any folder |
+| `BandBar-Setup-x.y.z.exe` | Per-user Inno Setup installer |
+| `BandBar-x.y.z-portable.zip` | The executable and its notices, to run from any folder |
 | `SHA256SUMS.txt` | SHA-256 of both files |
 
-**Installer:** installs to `%LocalAppData%\Programs\NLInfoBar` without administrator rights
+**Installer:** installs to `%LocalAppData%\Programs\BandBar` without administrator rights
 (`PrivilegesRequired=lowest`), adds a Start menu shortcut and, only if the user ticks it, a Startup shortcut. It
-closes a running NLInfoBar first. Installing a newer version over an older one upgrades in place and keeps
+closes a running BandBar first. Installing a newer version over an older one upgrades in place and keeps
 `settings.json`. It never touches `HKLM`, `Program Files`, NetLimiter, or any other program.
 
 **Uninstall** (Windows Settings → Apps) removes exactly: the installed files, the shortcuts it created, its own
-uninstall entry under `HKCU`, and — by name — `settings.json`, `nlinfobar.log` and `nlinfobar.log.1` in the install
-folder and in `%LocalAppData%\NLInfoBar`, then those folders if they are empty. Nothing else.
+uninstall entry under `HKCU`, and — by name — `settings.json`, `bandbar.log` and `bandbar.log.1` in the install
+folder and in `%LocalAppData%\BandBar`, then those folders if they are empty. Nothing else.
 
 **Portable:** unzip anywhere and run; remove by deleting the folder.
 

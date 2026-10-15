@@ -9,6 +9,6 @@ Please also respect privacy: do not post anyone's personal information, and do n
 screenshots in issues should not contain personal data.
 
 To report unacceptable behaviour, contact the maintainers privately through
-[GitHub's private reporting](https://github.com/yasirow/NLInfoBar/security/advisories/new) or by messaging a
+[GitHub's private reporting](https://github.com/yasirow/BandBar/security/advisories/new) or by messaging a
 maintainer on GitHub. Maintainers may remove comments, issues or contributions that violate this code and may block
 repeat offenders.

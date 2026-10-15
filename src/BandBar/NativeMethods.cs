@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// Every Win32 call the app makes. docs/DESIGN.md lists the allowed calls; anything not listed there does not belong here.

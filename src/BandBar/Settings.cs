@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Security;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>settings.json (docs/DESIGN.md). Read-only in this phase: the app never writes it yet.</summary>
     [DataContract]

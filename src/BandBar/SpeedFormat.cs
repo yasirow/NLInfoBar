@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
-    /// Dynamic B/s → KB/s → MB/s → GB/s with one decimal, as the original InfoBar showed it (docs/DESIGN.md).
+    /// Dynamic B/s → KB/s → MB/s → GB/s with one decimal (docs/DESIGN.md).
     /// Values are truncated, not rounded, so the bar never shows more than was measured and never flips to "1024,0".
     /// </summary>
     internal static class SpeedFormat

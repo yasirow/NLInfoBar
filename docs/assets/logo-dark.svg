@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="440" height="96" viewBox="0 0 440 96" role="img" aria-label="NLInfoBar">
-  <title>NLInfoBar</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="96" viewBox="0 0 400 96" role="img" aria-label="BandBar">
+  <title>BandBar</title>
   <!-- upload: red up arrow -->
   <path d="M30 10 L50 32 L38 32 L38 46 L22 46 L22 32 L10 32 Z" fill="#E74C3C"/>
   <!-- download: green down arrow -->
   <path d="M30 86 L50 64 L38 64 L38 50 L22 50 L22 64 L10 64 Z" fill="#2ECC71"/>
-  <text x="66" y="64" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#E6EDF3" letter-spacing="0.5">NL<tspan font-weight="400">InfoBar</tspan></text>
+  <text x="66" y="64" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#E6EDF3" letter-spacing="0.5">Band<tspan font-weight="400">Bar</tspan></text>
 </svg>

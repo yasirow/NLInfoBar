@@ -36,8 +36,8 @@ $(($section -join "`n").Trim())
 
 | File | For |
 |---|---|
-| **NLInfoBar-Setup-$Version.exe** | Recommended. Installs for the current user, no administrator rights. Installing over an older version upgrades it and keeps your settings. |
-| NLInfoBar-$Version-portable.zip | Unzip anywhere and run ``NLInfoBar.exe``. Delete the folder to remove it. |
+| **BandBar-Setup-$Version.exe** | Recommended. Installs for the current user, no administrator rights. Installing over an older version upgrades it and keeps your settings. |
+| BandBar-$Version-portable.zip | Unzip anywhere and run ``BandBar.exe``. Delete the folder to remove it. |
 | SHA256SUMS.txt | Checksums of both files. |
 
 **Requirements:** Windows 10 (1809+) or Windows 11, 64-bit; a licensed NetLimiter 5 installation.
@@ -45,7 +45,7 @@ $(($section -join "`n").Trim())
 The files are not code-signed yet, so Windows SmartScreen may show a warning on first run (**More info → Run anyway**).
 To verify a download, compare ``Get-FileHash <file> -Algorithm SHA256`` with ``SHA256SUMS.txt``.
 
-NLInfoBar is an independent project and is not affiliated with Locktime Software, the developer of NetLimiter.
+BandBar is an independent project and is not affiliated with Locktime Software, the developer of NetLimiter.
 "@
 
 $dir = Split-Path $OutFile -Parent

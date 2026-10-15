@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Report a security vulnerability
-    url: https://github.com/yasirow/NLInfoBar/security/advisories/new
+    url: https://github.com/yasirow/BandBar/security/advisories/new
     about: Please report security problems privately, not as a public issue.
   - name: NetLimiter support
     url: https://www.netlimiter.com/

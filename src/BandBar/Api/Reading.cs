@@ -1,4 +1,4 @@
-namespace NLInfoBar.Api
+namespace BandBar.Api
 {
     internal enum LinkStatus
     {

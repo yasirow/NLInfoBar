@@ -2,9 +2,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using static NLInfoBar.NativeMethods;
+using static BandBar.NativeMethods;
 
-namespace NLInfoBar.Api
+namespace BandBar.Api
 {
     /// <summary>Authenticode checks run on each NetLimiter API file before it is loaded (docs/DESIGN.md).</summary>
     internal static class Authenticode

@@ -4,7 +4,7 @@ using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace NLInfoBar
+namespace BandBar
 {
     /// <summary>
     /// Small rotating text log (256 KB + one backup). Messages are scrubbed of profile paths, the user name and the

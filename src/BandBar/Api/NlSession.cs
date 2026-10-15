@@ -2,7 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using NetLimiter.Service;
 
-namespace NLInfoBar.Api
+namespace BandBar.Api
 {
     /// <summary>
     /// The only class that uses NetLimiter API types (docs/DESIGN.md). It is first touched from inside a try/catch in

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Security;
 using Microsoft.Win32;
 
-namespace NLInfoBar.Api
+namespace BandBar.Api
 {
     internal enum ApiLoadFailure
     {

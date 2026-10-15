@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Builds NLInfoBar while keeping every SDK and NuGet side effect inside this folder (docs/DESIGN.md).
+    Builds BandBar while keeping every SDK and NuGet side effect inside this folder (docs/DESIGN.md).
 
 .PARAMETER Configuration
     Debug or Release (default).
@@ -18,8 +18,8 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $root = $PSScriptRoot
-$project = Join-Path $root 'src\NLInfoBar\NLInfoBar.csproj'
-$lockFile = Join-Path $root 'src\NLInfoBar\packages.lock.json'
+$project = Join-Path $root 'src\BandBar\BandBar.csproj'
+$lockFile = Join-Path $root 'src\BandBar\packages.lock.json'
 
 # SDK and NuGet per-user state goes into the repository instead of the user profile.
 # On first use NuGet writes a default user NuGet.Config under %APPDATA% and a migrations marker under the

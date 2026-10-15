@@ -1,21 +1,21 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
-    <img src="docs/assets/logo-light.svg" alt="NLInfoBar" width="360">
+    <img src="docs/assets/logo-light.svg" alt="BandBar" width="360">
   </picture>
 </p>
 
 <h3 align="center">Live NetLimiter upload and download speed on your Windows taskbar</h3>
 
 <p align="center">
-  The taskbar InfoBar that Windows 11 can no longer show, rebuilt as a tiny standalone app.<br>
+  A tiny, standalone taskbar speed meter for NetLimiter users on Windows 11 and 10.<br>
   Offline, no administrator rights, no hooks — and out of the way of your games.
 </p>
 
 <p align="center">
-  <a href="https://github.com/yasirow/NLInfoBar/releases"><img src="https://img.shields.io/github/v/release/yasirow/NLInfoBar?include_prereleases&style=flat-square&label=release" alt="Latest release"></a>
-  <a href="https://github.com/yasirow/NLInfoBar/releases"><img src="https://img.shields.io/github/downloads/yasirow/NLInfoBar/total?style=flat-square&label=downloads" alt="Downloads"></a>
-  <a href="https://github.com/yasirow/NLInfoBar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasirow/NLInfoBar/ci.yml?branch=main&style=flat-square&label=build" alt="Build status"></a>
+  <a href="https://github.com/yasirow/BandBar/releases"><img src="https://img.shields.io/github/v/release/yasirow/BandBar?include_prereleases&style=flat-square&label=release" alt="Latest release"></a>
+  <a href="https://github.com/yasirow/BandBar/releases"><img src="https://img.shields.io/github/downloads/yasirow/BandBar/total?style=flat-square&label=downloads" alt="Downloads"></a>
+  <a href="https://github.com/yasirow/BandBar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/yasirow/BandBar/ci.yml?branch=main&style=flat-square&label=build" alt="Build status"></a>
   <img src="https://img.shields.io/badge/Windows-10%20%C2%B7%2011-0078D4?style=flat-square" alt="Windows 10 and 11">
   <img src="https://img.shields.io/badge/.NET%20Framework-4.8-512BD4?style=flat-square" alt=".NET Framework 4.8">
   <img src="https://img.shields.io/badge/requires-NetLimiter%205-3C8D2F?style=flat-square" alt="Requires NetLimiter 5">
@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/yasirow/NLInfoBar/releases/latest"><img src="https://img.shields.io/badge/Download%20for%20Windows-2EA44F?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows"></a>
+  <a href="https://github.com/yasirow/BandBar/releases/latest"><img src="https://img.shields.io/badge/Download%20for%20Windows-2EA44F?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows"></a>
 </p>
 
 <p align="center">
@@ -37,23 +37,24 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/preview.svg" alt="NLInfoBar on a dark taskbar, next to the notification area: a red up arrow with the upload speed above a green down arrow with the download speed">
+  <img src="docs/assets/preview.svg" alt="BandBar on a dark taskbar, next to the notification area: a red up arrow with the upload speed above a green down arrow with the download speed">
 </p>
 
 > [!NOTE]
-> **Unofficial project.** NLInfoBar is independent and open source. It is not affiliated with, endorsed by or
+> **Unofficial project.** BandBar is independent and open source. It is not affiliated with, endorsed by or
 > supported by Locktime Software, the developer of NetLimiter. NetLimiter is their trademark. You need your own
-> licensed copy of NetLimiter 5.
+> licensed copy of NetLimiter 5. When an official NetLimiter taskbar bar is available for your Windows version,
+> prefer it.
 
 ## Why
 
-NetLimiter's InfoBar is a taskbar toolbar (a "deskband"). Windows 11 removed taskbar toolbars, so the InfoBar can no
-longer appear. NLInfoBar shows the same two numbers with the same look, using NetLimiter's official public API — as
-an ordinary, separate window that never modifies the taskbar or any other program.
+NetLimiter's own taskbar bar is a taskbar toolbar (a "deskband"), and Windows 11 removed taskbar toolbars. BandBar
+fills that gap: it shows the live upload and download speed using NetLimiter's official public API, as an ordinary,
+separate window that never modifies the taskbar or any other program.
 
 ## Features
 
-- **The InfoBar look** — two lines on the taskbar: red ⬆ upload, green ⬇ download, transparent background,
+- **Compact two-line display** — red ⬆ upload above green ⬇ download, transparent background,
   B/s → KB/s → MB/s with one decimal.
 - **Follows the taskbar** — sits just before the notification area on a top, bottom, left or right taskbar, and
   moves when the taskbar, the tray icons, the resolution or the scaling change, or when Explorer restarts.
@@ -74,37 +75,41 @@ Nothing else: the .NET Framework 4.8 it uses is part of Windows.
 
 ## Install
 
-1. Download the newest **`NLInfoBar-Setup-x.y.z.exe`** from [Releases](https://github.com/yasirow/NLInfoBar/releases/latest).
+1. Download the newest **`BandBar-Setup-x.y.z.exe`** from [Releases](https://github.com/yasirow/BandBar/releases/latest).
 2. Run it. It installs for your user only and does **not** ask for administrator rights. Tick
-   *Start NLInfoBar when I sign in to Windows* if you want it to start automatically.
+   *Start BandBar when I sign in to Windows* if you want it to start automatically.
 3. The bar appears on your taskbar, just before the clock and tray icons.
 
 | Download | Use it when |
 |---|---|
-| `NLInfoBar-Setup-x.y.z.exe` | Recommended. Start menu entry, optional autostart, clean uninstall. |
-| `NLInfoBar-x.y.z-portable.zip` | You prefer no installation: unzip anywhere and run `NLInfoBar.exe`. |
+| `BandBar-Setup-x.y.z.exe` | Recommended. Start menu entry, optional autostart, clean uninstall. |
+| `BandBar-x.y.z-portable.zip` | You prefer no installation: unzip anywhere and run `BandBar.exe`. |
 | `SHA256SUMS.txt` | To verify your download. |
 
 > [!TIP]
 > Releases are not code-signed yet, so Windows SmartScreen may warn on first run — choose **More info → Run
 > anyway**. To check that a file is exactly what the build produced, run
-> `Get-FileHash .\NLInfoBar-Setup-x.y.z.exe -Algorithm SHA256` in PowerShell and compare the hash with
-> `SHA256SUMS.txt`. Every release is built by [GitHub Actions](https://github.com/yasirow/NLInfoBar/actions) from
+> `Get-FileHash .\BandBar-Setup-x.y.z.exe -Algorithm SHA256` in PowerShell and compare the hash with
+> `SHA256SUMS.txt`. Every release is built by [GitHub Actions](https://github.com/yasirow/BandBar/actions) from
 > the tagged source code.
 
 ## Update
 
-NLInfoBar never checks for updates by itself, because it never connects to the internet.
+BandBar never checks for updates by itself, because it never connects to the internet.
 
 - **Get notified:** on this page, click **Watch → Custom → Releases**.
 - **Update:** download the newer setup and run it. It closes the running bar, upgrades it in place and keeps your
-  settings. With the portable ZIP, replace `NLInfoBar.exe`.
+  settings. With the portable ZIP, replace `BandBar.exe`.
 - **What changed:** each release lists its changes, and they are all collected in [CHANGELOG.md](CHANGELOG.md).
 - **Which version do I have?** Hover the bar; the first line of the tooltip shows it.
 
+> [!IMPORTANT]
+> Version 0.1.3 was published under the project's earlier name. If you installed it, exit it and uninstall it from
+> **Windows Settings → Apps** (it is listed under that earlier name) before installing BandBar 0.1.4 or later.
+
 ## Uninstall
 
-Open **Windows Settings → Apps → Installed apps → NLInfoBar → Uninstall**. This removes the program, its shortcuts,
+Open **Windows Settings → Apps → Installed apps → BandBar → Uninstall**. This removes the program, its shortcuts,
 its uninstall entry and its own settings and log files — and nothing else. NetLimiter is not touched.
 For the portable version, exit the bar and delete its folder.
 
@@ -118,14 +123,14 @@ For the portable version, exit the bar and delete its folder.
 |---|---|
 | Speeds with coloured arrows | Connected and up to date |
 | `…` | Connecting to NetLimiter |
-| `—` | The NetLimiter service is not running; NLInfoBar reconnects automatically |
+| `—` | The NetLimiter service is not running; BandBar reconnects automatically |
 | `denied` | NetLimiter refused access (the Windows user needs NetLimiter's *Monitor* right) |
 | `API?` | NetLimiter's files failed the signature check, or this NetLimiter version is not compatible |
 | `NL?` | NetLimiter is not installed |
 
 ### Settings
 
-Optional: create `settings.json` next to `NLInfoBar.exe` and restart the bar. For example, to show two decimals,
+Optional: create `settings.json` next to `BandBar.exe` and restart the bar. For example, to show two decimals,
 use units of 1000 and a different green:
 
 ```json
@@ -136,7 +141,7 @@ All keys are listed in [docs/DESIGN.md](docs/DESIGN.md#81-settingsjson).
 
 ## Games, anti-cheat and privacy
 
-NLInfoBar is built to be invisible to games and anti-cheat systems:
+BandBar is built to be invisible to games and anti-cheat systems:
 
 - It installs no hooks, injects nothing, opens no handles to games and draws no overlay.
 - It learns about full-screen applications from the same Windows notification the taskbar uses, then hides
@@ -151,8 +156,8 @@ The full list of rules, and every Windows function the app is allowed to call, i
 ## Build from source
 
 ```powershell
-git clone https://github.com/yasirow/NLInfoBar.git
-cd NLInfoBar
+git clone https://github.com/yasirow/BandBar.git
+cd BandBar
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
@@ -176,5 +181,5 @@ issues go through [private reporting](SECURITY.md), not public issues.
 
 ## License
 
-[MIT](LICENSE) © NLInfoBar contributors. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for NetLimiter and the
+[MIT](LICENSE) © BandBar contributors. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for NetLimiter and the
 build tools.
