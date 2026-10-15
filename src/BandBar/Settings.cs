@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -25,16 +24,15 @@ namespace BandBar
         /// <summary>Null: just before the notification area (docs/DESIGN.md).</summary>
         [DataMember(Name = "anchorOffsetDip")] public int? AnchorOffsetDip;
         [DataMember(Name = "hideOnFullscreen")] public bool HideOnFullscreen;
-        [DataMember(Name = "followAutoHideTaskbar")] public bool FollowAutoHideTaskbar;
-        [DataMember(Name = "fullscreenExeList")] public List<string> FullscreenExeList;
-        [DataMember(Name = "hotkey")] public string Hotkey;
         [DataMember(Name = "logLevel")] public string LogLevel;
 
         public Settings() => SetDefaults();
 
         public Color DownloadColor { get; private set; }
         public Color UploadColor { get; private set; }
-        public Color TextColor { get; private set; }
+
+        /// <summary>Text colour from <c>colors.text</c>; null means it follows <see cref="Theme"/>.</summary>
+        public Color? TextColorOverride { get; private set; }
 
         /// <summary>Null: transparent, the taskbar shows through (default).</summary>
         public Color? BackgroundColor { get; private set; }
@@ -78,14 +76,11 @@ namespace BandBar
             ZoneFilterId = null;
             UnitBase = 1024;
             Decimals = 1;
-            Theme = "dark";
+            Theme = "auto";
             Colors = new ColorSettings();
             Opacity = 0.85;
             AnchorOffsetDip = null;
             HideOnFullscreen = true;
-            FollowAutoHideTaskbar = false;
-            FullscreenExeList = new List<string>();
-            Hotkey = null;
             LogLevel = "info";
         }
 
@@ -97,16 +92,24 @@ namespace BandBar
             Opacity = double.IsNaN(Opacity) ? 0.85 : Math.Max(0.3, Math.Min(1.0, Opacity));
             if (AnchorOffsetDip.HasValue)
                 AnchorOffsetDip = Clamp(AnchorOffsetDip.Value, 0, 10000);
-            FullscreenExeList = FullscreenExeList ?? new List<string>();
             Colors = Colors ?? new ColorSettings();
 
-            bool light = string.Equals(Theme, "light", StringComparison.OrdinalIgnoreCase);
-            Theme = light ? "light" : "dark";
+            string theme = (Theme ?? "").Trim().ToLowerInvariant();
+            Theme = theme == "dark" || theme == "light" ? theme : "auto";
             DownloadColor = ParseColor(Colors.Download) ?? Color.FromArgb(0x2E, 0xCC, 0x71);
             UploadColor = ParseColor(Colors.Upload) ?? Color.FromArgb(0xE7, 0x4C, 0x3C);
-            TextColor = ParseColor(Colors.Text) ?? (light ? Color.FromArgb(0x1A, 0x1A, 0x1A) : Color.White);
+            TextColorOverride = ParseColor(Colors.Text);
             Color? background = ParseColor(Colors.Background);
             BackgroundColor = background.HasValue ? Color.FromArgb((int)Math.Round(Opacity * 255), background.Value) : (Color?)null;
+        }
+
+        /// <summary>Text colour for the current theme: dark text on a light taskbar, white text otherwise.</summary>
+        public Color ResolveTextColor()
+        {
+            if (TextColorOverride.HasValue)
+                return TextColorOverride.Value;
+            bool light = Theme == "light" || (Theme == "auto" && SystemTheme.TaskbarIsLight());
+            return light ? Color.FromArgb(0x1A, 0x1A, 0x1A) : Color.White;
         }
 
         private static int Clamp(int value, int min, int max) => Math.Max(min, Math.Min(max, value));

@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using static BandBar.NativeMethods;
 
 namespace BandBar
@@ -10,7 +11,8 @@ namespace BandBar
     /// </summary>
     internal static class LayeredWindow
     {
-        public static bool Update(IntPtr hwnd, Bitmap bitmap, Point location)
+        /// <returns>0 on success, otherwise the Win32 error of UpdateLayeredWindow.</returns>
+        public static int Update(IntPtr hwnd, Bitmap bitmap, Point location)
         {
             IntPtr screenDc = GetDC(IntPtr.Zero);
             IntPtr memoryDc = CreateCompatibleDC(screenDc);
@@ -26,7 +28,10 @@ namespace BandBar
                 var size = new SIZE { Cx = bitmap.Width, Cy = bitmap.Height };
                 var source = new POINT();
                 var blend = new BLENDFUNCTION { BlendOp = AC_SRC_OVER, SourceConstantAlpha = 255, AlphaFormat = AC_SRC_ALPHA };
-                return UpdateLayeredWindow(hwnd, screenDc, ref destination, ref size, memoryDc, ref source, 0, ref blend, ULW_ALPHA);
+                // Read the error right away: the clean-up calls below would overwrite it.
+                return UpdateLayeredWindow(hwnd, screenDc, ref destination, ref size, memoryDc, ref source, 0, ref blend, ULW_ALPHA)
+                    ? 0
+                    : Marshal.GetLastWin32Error();
             }
             finally
             {

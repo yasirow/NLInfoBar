@@ -21,9 +21,10 @@ namespace BandBar
         private const int AppBarCallbackMessage = WM_APP + 1;
         private const int TrayGapDip = 4;
         private const int FallbackOffsetDip = 220;
-        // After a shell event, check every 50 ms for ~600 ms whether the taskbar has raised itself over the bar.
-        private const int ZOrderCheckIntervalMs = 50;
-        private const int ZOrderCheckCount = 12;
+        // After a shell event, check about once per frame (the Windows timer resolution, ~16 ms) for ~600 ms whether
+        // the taskbar has raised itself over the bar.
+        private const int ZOrderCheckIntervalMs = 16;
+        private const int ZOrderCheckCount = 38;
         private static readonly Color InactiveArrowColor = Color.FromArgb(0x8A, 0x8A, 0x8A);
         // Invisible, but keeps every pixel of the bar clickable; fully transparent pixels pass clicks through.
         private static readonly Color HitTestableClear = Color.FromArgb(1, 0, 0, 0);
@@ -53,6 +54,7 @@ namespace BandBar
         private string upText = "…";
         private string downText = "…";
         private string toolTipText;
+        private Color textColor;
 
         public BarForm(Settings settings)
         {
@@ -88,6 +90,7 @@ namespace BandBar
             };
 
             shellEventProc = OnShellEvent;
+            textColor = settings.ResolveTextColor();
             monitor = new NlMonitor(settings.ZoneFilterId, PostReading);
         }
 
@@ -184,6 +187,11 @@ namespace BandBar
                 case WM_SETTINGCHANGE:
                     if (m.WParam.ToInt64() == SPI_SETWORKAREA)
                         ScheduleReposition();
+                    else if (m.LParam != IntPtr.Zero && Marshal.PtrToStringUni(m.LParam) == "ImmersiveColorSet")
+                        OnThemeChanged(); // light/dark mode switched
+                    break;
+                case WM_DWMCOLORIZATIONCOLORCHANGED:
+                    OnThemeChanged(); // accent colour changed
                     break;
             }
 
@@ -290,8 +298,15 @@ namespace BandBar
             {
                 if (fullscreen || IsDisposed)
                     return;
-                if (eventType == EVENT_SYSTEM_FOREGROUND && CoversItsMonitor(hwnd))
-                    return; // a full-screen app is coming forward; ABN_FULLSCREENAPP hides the bar instead
+                if (eventType == EVENT_SYSTEM_FOREGROUND)
+                {
+                    if (CoversItsMonitor(hwnd))
+                        return; // a full-screen app is coming forward; ABN_FULLSCREENAPP hides the bar instead
+                }
+                else if (!BelongsToTaskbar(hwnd))
+                {
+                    return; // menu and mouse-capture events matter only when they happen on the taskbar
+                }
                 RaiseIfCoveredByTaskbar();
                 WatchZOrder();
             }
@@ -319,12 +334,23 @@ namespace BandBar
                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_NOOWNERZORDER);
         }
 
-        // Reads the z-order only: is the taskbar somewhere above the bar?
-        private bool IsCoveredByTaskbar()
+        private IntPtr GetTaskbarWindow()
         {
             if (taskbarWindow == IntPtr.Zero)
                 taskbarWindow = FindWindow("Shell_TrayWnd", null);
-            if (taskbarWindow == IntPtr.Zero)
+            return taskbarWindow;
+        }
+
+        private bool BelongsToTaskbar(IntPtr hwnd)
+        {
+            IntPtr taskbar = GetTaskbarWindow();
+            return taskbar != IntPtr.Zero && hwnd != IntPtr.Zero && GetAncestor(hwnd, GA_ROOT) == taskbar;
+        }
+
+        // Reads the z-order only: is the taskbar somewhere above the bar?
+        private bool IsCoveredByTaskbar()
+        {
+            if (GetTaskbarWindow() == IntPtr.Zero)
                 return false;
 
             IntPtr window = Handle;
@@ -397,7 +423,7 @@ namespace BandBar
 
             Rectangle tb = taskbar.Bounds;
             int thickness = taskbar.IsVertical ? tb.Width : tb.Height;
-            if (layout == null || layout.Dpi != taskbar.Dpi || layout.Size.Height > thickness)
+            if (layout == null || layout.Dpi != taskbar.Dpi || layout.MaxHeight != thickness)
             {
                 layout?.Dispose();
                 layout = new BarLayout(taskbar.Dpi, thickness, SpeedFormat.WidestSamples(settings)
@@ -482,11 +508,22 @@ namespace BandBar
                     layout.Draw(g, upText, downText,
                         live ? settings.UploadColor : InactiveArrowColor,
                         live ? settings.DownloadColor : InactiveArrowColor,
-                        settings.TextColor);
+                        textColor);
                 }
-                if (!LayeredWindow.Update(Handle, bitmap, Location))
-                    Log.Debug("UpdateLayeredWindow failed (" + Marshal.GetLastWin32Error() + ")");
+                int error = LayeredWindow.Update(Handle, bitmap, Location);
+                if (error != 0)
+                    Log.Debug("UpdateLayeredWindow failed (" + error + ")");
             }
+        }
+
+        private void OnThemeChanged()
+        {
+            Color color = settings.ResolveTextColor();
+            if (color == textColor)
+                return;
+            textColor = color;
+            Log.Info("Taskbar theme changed; text colour updated");
+            Render();
         }
 
         // Called on the monitor thread.

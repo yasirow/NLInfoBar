@@ -55,12 +55,12 @@ separate window that never modifies the taskbar or any other program.
 ## Features
 
 - **Compact two-line display** — red ⬆ upload above green ⬇ download, transparent background,
-  B/s → KB/s → MB/s with one decimal.
+  B/s → KB/s → MB/s with one decimal. The text turns dark on a light taskbar and back when you switch themes.
 - **Follows the taskbar** — sits just before the notification area on a top, bottom, left or right taskbar, and
   moves when the taskbar, the tray icons, the resolution or the scaling change, or when Explorer restarts.
 - **Gets out of the way of games** — hides completely, and stops reading, while a full-screen or borderless
   windowed application is in front.
-- **Light** — one ~55 KB executable, no runtime to install; about 0.02 % CPU while idle.
+- **Light** — one ~100 KB executable, no runtime to install; about 0.02 % CPU while idle.
 - **Safe by design** — no administrator rights, no network, no hooks or injection, no writes outside its own
   folder. NetLimiter's API is loaded from your own NetLimiter installation and its signature is verified first.
 - **Resilient** — if the NetLimiter service stops, it shows `—` and reconnects by itself; it never shows an error
@@ -68,10 +68,11 @@ separate window that never modifies the taskbar or any other program.
 
 ## Requirements
 
-- Windows 10 (version 1809 or later) or Windows 11, 64-bit (x64)
+- Windows 11, or Windows 10 version 1903 or later — 64-bit (x64)
 - A licensed installation of [NetLimiter 5](https://www.netlimiter.com/)
 
-Nothing else: the .NET Framework 4.8 it uses is part of Windows.
+Nothing else: the .NET Framework 4.8 it uses is part of these Windows versions. (Windows 10 version 1809 works too
+once .NET Framework 4.8 is installed from Microsoft; the setup checks for it and tells you if it is missing.)
 
 ## Install
 
@@ -102,6 +103,8 @@ BandBar never checks for updates by itself, because it never connects to the int
   settings. With the portable ZIP, replace `BandBar.exe`.
 - **What changed:** each release lists its changes, and they are all collected in [CHANGELOG.md](CHANGELOG.md).
 - **Which version do I have?** Hover the bar; the first line of the tooltip shows it.
+- **Updating NetLimiter itself?** Exit BandBar first (right-click → Exit). While it runs it keeps NetLimiter's API
+  files open, and the NetLimiter installer would find them in use.
 
 > [!IMPORTANT]
 > Version 0.1.3 was published under the project's earlier name. If you installed it, exit it and uninstall it from
@@ -136,6 +139,9 @@ use units of 1000 and a different green:
 ```json
 { "decimals": 2, "unitBase": 1000, "colors": { "download": "#00C853" } }
 ```
+
+The text colour follows your Windows taskbar (light or dark). If a taskbar tool paints its own colours and the text
+is hard to read, set `"theme": "dark"` (white text) or `"theme": "light"` (dark text).
 
 All keys are listed in [docs/DESIGN.md](docs/DESIGN.md#81-settingsjson).
 

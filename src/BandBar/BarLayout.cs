@@ -24,6 +24,7 @@ namespace BandBar
         public BarLayout(uint dpi, int maxHeight, IEnumerable<string> widestTexts)
         {
             Dpi = dpi;
+            MaxHeight = maxHeight;
             format = (StringFormat)StringFormat.GenericTypographic.Clone();
             format.FormatFlags |= StringFormatFlags.NoWrap | StringFormatFlags.MeasureTrailingSpaces;
 
@@ -52,6 +53,9 @@ namespace BandBar
         }
 
         public uint Dpi { get; }
+
+        /// <summary>The taskbar thickness this layout was fitted to.</summary>
+        public int MaxHeight { get; }
 
         public Size Size => new Size(padX * 2 + arrowWidth + arrowGap + textWidth, lineHeight * 2);
 

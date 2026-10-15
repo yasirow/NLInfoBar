@@ -8,6 +8,39 @@ milestone is a minor release (`0.x.0`) and fixes in between are patch releases (
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-10-16
+
+### Added
+- The text colour follows the Windows taskbar: dark text on a light taskbar, white text on a dark one, and a
+  readable choice when the taskbar shows the accent colour. It changes as soon as you switch themes. New default
+  `"theme": "auto"`; `"dark"` and `"light"` force a choice.
+- BandBar has its own icon (red and green arrows), shown on the setup, in the Start menu and in Windows Settings →
+  Apps. It is embedded in the executable.
+- The setup checks that the .NET Framework 4.8 is installed and explains what to do if it is not, instead of
+  installing an app that cannot start.
+
+### Changed
+- Taskbar watching now reacts to menu and mouse-capture events only when they happen on the taskbar, so clicks in
+  other programs no longer trigger any work.
+- After such an event the bar checks about once per frame (~16 ms, previously 50 ms) whether the taskbar has covered
+  it, which shortens the brief disappearance when Start or a jump list opens. A short flicker can remain: Windows
+  reports the taskbar moving to the front only after it happened.
+- An error in a window handler no longer closes the bar; BandBar logs it and keeps running, and exits only if errors
+  keep repeating (more than three within a minute).
+- Removed three settings keys that had no effect yet (`followAutoHideTaskbar`, `fullscreenExeList`, `hotkey`); they
+  will return with the features that use them.
+- Requirements clarified: Windows 11, or Windows 10 version 1903 or later (1809 with .NET Framework 4.8 installed).
+
+### Fixed
+- The log could mask parts of ordinary words that contained the computer name (for example "Windows" on a PC named
+  "WIN"); the name is now masked only as a whole word.
+- The error code of a failed redraw was read after clean-up calls had overwritten it.
+- On a very thin taskbar the layout was rebuilt on every repositioning; it is now rebuilt only when the DPI or the
+  taskbar thickness changes.
+
+### Known limitations
+- Exit BandBar before updating NetLimiter: while it runs, it keeps NetLimiter's API files open.
+
 ## [0.1.4] - 2026-10-15
 
 ### Changed
@@ -89,7 +122,8 @@ Initial preview.
 - An auto-hiding taskbar is not supported yet.
 - If the app is started while a full-screen game is already running, it does not hide until that game closes.
 
-[Unreleased]: https://github.com/yasirow/BandBar/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/yasirow/BandBar/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/yasirow/BandBar/releases/tag/v0.1.5
 [0.1.4]: https://github.com/yasirow/BandBar/releases/tag/v0.1.4
 [0.1.3]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#013---2026-10-14
 [0.1.2]: https://github.com/yasirow/BandBar/blob/main/CHANGELOG.md#012---2026-10-14

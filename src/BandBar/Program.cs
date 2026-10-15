@@ -12,6 +12,11 @@ namespace BandBar
         /// <summary>Single-instance mutex; the installer's AppMutex must use the same name.</summary>
         internal const string MutexName = @"Local\BandBar.SingleInstance";
 
+        // More UI-thread errors than this within the window means something is persistently broken: exit then.
+        private const int MaxUiErrors = 3;
+        private static readonly TimeSpan UiErrorWindow = TimeSpan.FromSeconds(60);
+        private static readonly System.Collections.Generic.Queue<DateTime> RecentUiErrors = new System.Collections.Generic.Queue<DateTime>();
+
         internal static bool IsElevated { get; private set; }
 
         internal static string Version => typeof(Program).Assembly.GetName().Version.ToString(3);
@@ -32,7 +37,7 @@ namespace BandBar
 
                 AppDomain.CurrentDomain.UnhandledException += (s, e) => Fatal(e.ExceptionObject as Exception);
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-                Application.ThreadException += (s, e) => Fatal(e.Exception);
+                Application.ThreadException += (s, e) => OnUiThreadException(e.Exception);
                 TaskScheduler.UnobservedTaskException += (s, e) =>
                 {
                     Log.Warn("Unobserved task exception", e.Exception);
@@ -54,6 +59,21 @@ namespace BandBar
                 Log.Info("Exited");
                 return 0;
             }
+        }
+
+        // A single failure in a UI handler (a reposition, a redraw) must not silently remove the bar; a burst of them
+        // means the state is broken, and exiting is then the safe choice.
+        private static void OnUiThreadException(Exception ex)
+        {
+            DateTime now = DateTime.UtcNow;
+            RecentUiErrors.Enqueue(now);
+            while (RecentUiErrors.Count > 0 && now - RecentUiErrors.Peek() > UiErrorWindow)
+                RecentUiErrors.Dequeue();
+
+            if (RecentUiErrors.Count > MaxUiErrors)
+                Fatal(ex);
+            else
+                Log.Error("Error on the UI thread; continuing", ex);
         }
 
         private static void Fatal(Exception ex)

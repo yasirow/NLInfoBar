@@ -13,6 +13,7 @@ namespace BandBar
         public const int WM_MOUSEACTIVATE = 0x0021;
         public const int WM_DISPLAYCHANGE = 0x007E;
         public const int WM_DPICHANGED = 0x02E0;
+        public const int WM_DWMCOLORIZATIONCOLORCHANGED = 0x0320;
         public const int WM_APP = 0x8000;
 
         public const int MA_NOACTIVATE = 3;
@@ -211,6 +212,11 @@ namespace BandBar
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        public const uint GA_ROOT = 2;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetAncestor(IntPtr hwnd, uint gaFlags);
 
         [DllImport("user32.dll")]
         public static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc,

@@ -51,6 +51,7 @@ CloseApplications=yes
 RestartApplications=no
 
 LicenseFile=..\LICENSE
+SetupIconFile=..\src\BandBar\BandBar.ico
 UninstallDisplayName={#AppName}
 UninstallDisplayIcon={app}\{#AppExe}
 OutputDir={#OutputDir}
@@ -67,8 +68,10 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 [CustomMessages]
 english.StartupTask=Start BandBar when I sign in to Windows
 english.OptionsGroup=Options:
+english.NeedDotNet48=BandBar needs the Microsoft .NET Framework 4.8, which is not installed on this PC.%n%nIt is part of Windows 10 version 1903 and later and of Windows 11. On older Windows 10 versions, install it from Microsoft (search for ".NET Framework 4.8 download") and run this setup again.
 turkish.StartupTask=Windows'ta oturum açtığımda BandBar'ı başlat
 turkish.OptionsGroup=Seçenekler:
+turkish.NeedDotNet48=BandBar, bu bilgisayarda kurulu olmayan Microsoft .NET Framework 4.8'e ihtiyaç duyar.%n%nBu bileşen Windows 10 sürüm 1903 ve sonrasında ve Windows 11'de hazır gelir. Daha eski Windows 10 sürümlerinde Microsoft'tan kurun (".NET Framework 4.8 indir" diye aratın) ve bu kurulumu yeniden çalıştırın.
 
 [Tasks]
 Name: "startup"; Description: "{cm:StartupTask}"; GroupDescription: "{cm:OptionsGroup}"; Flags: unchecked
@@ -96,3 +99,20 @@ Type: files; Name: "{localappdata}\BandBar\bandbar.log"
 Type: files; Name: "{localappdata}\BandBar\bandbar.log.1"
 Type: dirifempty; Name: "{localappdata}\BandBar"
 Type: dirifempty; Name: "{app}"
+
+[Code]
+// .NET Framework 4.8 or later: Release >= 528040. Read only; setup never downloads or installs anything else.
+function IsDotNet48Installed(): Boolean;
+var
+  Release: Cardinal;
+begin
+  Result := RegQueryDWordValue(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', Release)
+    and (Release >= 528040);
+end;
+
+function InitializeSetup(): Boolean;
+begin
+  Result := IsDotNet48Installed();
+  if not Result then
+    SuppressibleMsgBox(CustomMessage('NeedDotNet48'), mbCriticalError, MB_OK, IDOK);
+end;

@@ -40,7 +40,7 @@ $(($section -join "`n").Trim())
 | BandBar-$Version-portable.zip | Unzip anywhere and run ``BandBar.exe``. Delete the folder to remove it. |
 | SHA256SUMS.txt | Checksums of both files. |
 
-**Requirements:** Windows 10 (1809+) or Windows 11, 64-bit; a licensed NetLimiter 5 installation.
+**Requirements:** Windows 11 or Windows 10 1903+ (64-bit; 1809 with .NET Framework 4.8); a licensed NetLimiter 5 installation.
 
 The files are not code-signed yet, so Windows SmartScreen may show a warning on first run (**More info → Run anyway**).
 To verify a download, compare ``Get-FileHash <file> -Algorithm SHA256`` with ``SHA256SUMS.txt``.

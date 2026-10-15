@@ -29,6 +29,8 @@ The log (`bandbar.log`, next to the executable) should contain no `WARN` or `ERR
 | B4 | Right-click the bar; click elsewhere; right-click again and choose Exit | Menu opens, closes on the outside click, Exit closes the bar |
 | B5 | Start the executable a second time | Still exactly one bar |
 | B6 | Lock (Win+L) and unlock | The bar keeps updating after unlock |
+| B7 | Settings → Personalization → Colors: switch the Windows mode between Light and Dark | The text turns dark on the light taskbar and white on the dark one, without restarting BandBar |
+| B8 | Show the accent colour on the taskbar (Colors → "Show accent color on Start and taskbar") with a light and with a dark accent | The text stays readable |
 
 ### Taskbar
 
@@ -39,6 +41,8 @@ The log (`bandbar.log`, next to the executable) should contain no `WARN` or `ERR
 | T3 | Restart Windows Explorer (Task Manager) | The bar returns to its place |
 | T4 | Move the taskbar to each screen edge (if your setup allows) | The bar follows on the taskbar surface |
 | T5 | Change display scaling or resolution | The bar re-scales and stays inside the taskbar |
+| T6 | Switch virtual desktops (Win+Ctrl+← / →) | The bar stays on the taskbar on every desktop |
+| T7 | On Windows 10, open many windows so taskbar buttons reach the notification area | Known limitation: the bar can overlap buttons; nothing breaks |
 
 ### Full screen and games
 
@@ -48,6 +52,7 @@ The log (`bandbar.log`, next to the executable) should contain no `WARN` or `ERR
 | F2 | Leave the game or Alt+Tab to the desktop | The bar comes back |
 | F3 | Repeat F1–F2 with exclusive full screen | Same as F1–F2 |
 | F4 | Play a game protected by anti-cheat | No warning, kick or stutter |
+| F5 | Start BandBar while a full-screen game is already in front | Known limitation until 0.3.0: the bar stays visible until that game closes |
 
 ### Service and failure handling
 
@@ -65,6 +70,8 @@ The log (`bandbar.log`, next to the executable) should contain no `WARN` or `ERR
 | I2 | Install a newer version over it | Upgrades in place; `settings.json` kept |
 | I3 | Uninstall from Windows Settings → Apps | The install folder, shortcuts and uninstall entry are gone; nothing else changed |
 | I4 | Check `SHA256SUMS.txt` against the downloads | Hashes match |
+| I5 | Look at the Start menu entry, the setup file and Windows Settings → Apps | BandBar's own icon (red and green arrows) is shown |
+| I6 | Run the setup on Windows 10 1809 without .NET Framework 4.8 | A clear message, setup ends without installing anything |
 
 ## Results
 
@@ -74,4 +81,5 @@ The log (`bandbar.log`, next to the executable) should contain no `WARN` or `ERR
 | 0.1.1 | Windows 11, NetLimiter 5.3 | B1, B2, B4–B6, T2, T3, F1–F4 passed (F4 with a title using kernel-mode anti-cheat). T1 failed: brief disappearance on Start and on taskbar right-click |
 | 0.1.2 | Windows 11, NetLimiter 5.3 | B3 passed. T1 re-test pending |
 | 0.1.3 | Windows 11, NetLimiter 5.3 | I1 passed (per-user install, Start menu entry, optional startup shortcut). Installer built and checksums verified by CI |
-| 0.1.4 | — | Rename release (no behaviour change). Automated checks; I1–I4 pending on the published build |
+| 0.1.4 | Windows 11, NetLimiter 5.3 | Rename release (no behaviour change). I1 passed (installed per user with startup shortcut, runs); I3 passed for the previous version (uninstall left no folder, shortcut or uninstall entry); I4 verified by CI and after download |
+| 0.1.5 | Windows 11, NetLimiter 5.3 | B2, B7, B8 passed (text follows light/dark mode and accent colour without restart); normal use unaffected. T1: a brief flicker remains on Start and taskbar right-click (known limitation; check interval shortened from 50 to ~16 ms afterwards). I1–I5 pending on the published build |

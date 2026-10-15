@@ -21,6 +21,7 @@ namespace BandBar
         private static Level minLevel = Level.Info;
         private static (string Find, string Replace)[] scrubPairs = Array.Empty<(string, string)>();
         private static Regex scrubUserSegment;
+        private static Regex scrubMachine;
 
         public static void Init(string dataDir)
         {
@@ -108,10 +109,13 @@ namespace BandBar
             if (temp.Length > 0)
                 pairs.Insert(0, (temp, "%TEMP%"));
 
-            string machine = Environment.MachineName;
-            if (machine.Length >= 3)
-                pairs.Add((machine, "<machine>"));
             scrubPairs = pairs.ToArray();
+
+            // The computer name only as a whole word, so a name such as "WIN" does not turn "Windows" into "<machine>dows".
+            string machine = Environment.MachineName;
+            if (!string.IsNullOrEmpty(machine))
+                scrubMachine = new Regex(@"(?<![A-Za-z0-9_-])" + Regex.Escape(machine) + @"(?![A-Za-z0-9_-])",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
             // The user name only where it can be one: a path segment or DOMAIN\user. A short name such as "A"
             // must not be replaced inside ordinary words.
@@ -125,6 +129,8 @@ namespace BandBar
         {
             foreach ((string find, string replace) in scrubPairs)
                 text = Replace(text, find, replace);
+            if (scrubMachine != null)
+                text = scrubMachine.Replace(text, "<machine>");
             return scrubUserSegment == null ? text : scrubUserSegment.Replace(text, "<user>");
         }
 

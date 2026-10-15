@@ -40,7 +40,7 @@ for the full model.
 Every release publishes `SHA256SUMS.txt`. In PowerShell:
 
 ```powershell
-Get-FileHash .\BandBar-Setup-0.1.4.exe -Algorithm SHA256
+Get-FileHash .\BandBar-Setup-0.1.5.exe -Algorithm SHA256
 ```
 
 Compare the result with the line for that file in `SHA256SUMS.txt`. Releases are built by GitHub Actions from the
